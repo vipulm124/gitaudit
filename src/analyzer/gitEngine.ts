@@ -137,16 +137,23 @@ export async function analyzeRepo(
     }
   }
 
-  // Step 4 — compute per-file metrics
+  // Step 4 — get tracked files (excludes .gitignore'd files)
+  onProgress?.('Checking tracked files...', 0, 1);
+  const trackedRaw = git(repoPath, ['ls-files']);
+  const trackedFiles = new Set(
+    trackedRaw.split('\n').map(f => f.trim().replace(/\\/g, '/')).filter(Boolean)
+  );
+
+  // Step 5 — compute per-file metrics
   onProgress?.('Computing file metrics...', 0, fileMap.size);
 
   const now   = new Date();
   const files: FileMetrics[] = [];
   let idx = 0;
-  const fs = require('fs');
 
   for (const [filePath, data] of fileMap.entries()) {
-    if (!fs.existsSync(path.join(repoPath, filePath))) {
+    // Skip files not currently tracked (deleted or in .gitignore)
+    if (!trackedFiles.has(filePath)) {
       continue;
     }
 
