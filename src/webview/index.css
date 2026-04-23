@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-vscode-bg text-vscode-fg font-sans m-0 p-0 overflow-hidden;
+    font-family: var(--vscode-font-family);
+    font-weight: var(--vscode-font-weight);
+    font-size: var(--vscode-font-size);
+  }
+
+  #root {
+    @apply h-screen flex flex-col;
+  }
+}
+
+@layer utilities {
+  .spinner {
+    @apply w-10 h-10 border-4 border-vscode-hover border-t-vscode-chart-blue rounded-full animate-spin;
+  }
+}
