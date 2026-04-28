@@ -85,8 +85,5 @@ Configure GitAudit behavior in your VS Code settings (`settings.json`):
 
 ## Issues and Feedback
 
-Report issues or suggest features on the [GitHub repository](https://github.com/your-username/gitaudit).
+Report issues or suggest features on the [GitHub repository](https://github.com/vipulm124/gitaudit).
 
-## License
-
-[Specify your license here]
