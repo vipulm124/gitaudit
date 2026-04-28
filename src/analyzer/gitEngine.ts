@@ -4,10 +4,8 @@ import type { FileMetrics } from '../utils/types';
 import type { RepoMetrics } from '../utils/types';
 import { getConfig } from '../config';
 
-const { bugFixKeywords } = getConfig();
-
-
 function isBugFix(message: string): boolean {
+  const { bugFixKeywords } = getConfig();
   const lower = message.toLowerCase();
   return bugFixKeywords.some(k => lower.includes(k));
 }
