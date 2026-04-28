@@ -2,8 +2,9 @@
   "name": "gitaudit",
   "displayName": "GitAudit",
   "description": "GitAudit webview extension",
-  "publisher": "Vipul Malhotra",
+  "publisher": "VipulMalhotra",
   "version": "0.0.1",
+  "repository": "https://github.com/vipulm124/gitaudit",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0"
