@@ -274,29 +274,49 @@ const HeatmapGraph: React.FC<Props> = ({ files }) => {
   return (
     <div className="bg-vscode-bg border border-vscode-border p-6 rounded-2xl shadow-biggest animate-in fade-in zoom-in duration-500">
       {/* Header */}
-      <div className="w-full flex justify-between items-center mb-4 border-l-4 border-vscode-chart-blue pl-4">
-        <div>
-          <h3 className="text-xl font-bold tracking-tight">Risk Treemap</h3>
-          <p className="text-[0.65rem] opacity-40 mt-0.5">
+      <div className="w-full mb-4 border-l-4 border-vscode-chart-blue pl-4">
+        <div className="max-w-2xl">
+          <h3 className="text-2xl font-bold tracking-tight">Risk Treemap</h3>
+          <p className="text-sm text-vscode-foreground/90 mt-1 font-medium">
             Tile size = danger score · Color = danger level · Click directories to drill down
           </p>
-        </div>
-        <div className="flex gap-4 items-center">
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-[0.6rem] uppercase tracking-tighter opacity-40 font-black">Danger Level</span>
-            <div className="flex gap-1 h-3 items-center">
-              {(['safe', 'low', 'medium', 'high', 'critical'] as const).map(lvl => (
-                <div
-                  key={lvl}
-                  className="flex items-center gap-0.5"
-                  title={lvl}
-                >
-                  <div className="w-5 h-full rounded-sm" style={{ backgroundColor: dangerColors[lvl], opacity: 0.8 }} />
-                  <span className="text-[8px] opacity-30 hidden sm:inline">{lvl[0].toUpperCase()}</span>
-                </div>
-              ))}
-            </div>
+          <div className="mt-3 space-y-2 text-sm text-vscode-foreground/80 leading-5">
+            <p>
+              Colors reflect exact score ranges: safe (&lt;20), low (20–39), medium (40–59), high (60–79), critical (≥80).
+            </p>
+            <p>
+              Score is computed from recency, churn rate, bug-fix activity, and ownership.
+              Older files, high churn, frequent bug-fixes, or files with few owners increase risk.
+            </p>
+            <p>
+              Example: fresh stable code with steady contributions tends to stay safe/low;
+              old, rapidly changing, bug-prone, or single-owner files trend toward high/critical.
+            </p>
           </div>
+        </div>
+      </div>
+
+      <div className="mb-4 rounded-2xl border border-vscode-border/30 bg-vscode-sidebar/60 p-3">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="text-[0.65rem] uppercase tracking-[0.24em] opacity-50">Danger Level</div>
+            <div className="text-sm font-semibold">Color-coded risk tiers</div>
+          </div>
+          <div className="text-[0.7rem] opacity-60">Includes score range and hex value</div>
+        </div>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {(['safe', 'low', 'medium', 'high', 'critical'] as const).map(lvl => (
+            <div key={lvl} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[rgba(255,255,255,0.03)] px-3 py-2">
+              <span className="w-4 h-4 rounded-full shadow-sm" style={{ backgroundColor: dangerColors[lvl] }} />
+              <div>
+                <div className="font-medium text-sm capitalize">{lvl}</div>
+                <div className="text-[0.72rem] opacity-70">
+                  {lvl === 'safe' ? '<20' : lvl === 'low' ? '20–39' : lvl === 'medium' ? '40–59' : lvl === 'high' ? '60–79' : '≥80'}
+                </div>
+                <div className="text-[0.62rem] opacity-50">{dangerColors[lvl]}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -508,9 +528,11 @@ const HeatmapGraph: React.FC<Props> = ({ files }) => {
       <div className="flex gap-4 mt-3 text-[10px] opacity-40">
         <span>{files.length} total files</span>
         <span>·</span>
-        <span>{files.filter(f => f.dangerLevel === 'critical').length} critical</span>
-        <span>{files.filter(f => f.dangerLevel === 'high').length} high</span>
+        <span>{files.filter(f => f.dangerLevel === 'safe').length} safe</span>
+        <span>{files.filter(f => f.dangerLevel === 'low').length} low</span>
         <span>{files.filter(f => f.dangerLevel === 'medium').length} medium</span>
+        <span>{files.filter(f => f.dangerLevel === 'high').length} high</span>
+        <span>{files.filter(f => f.dangerLevel === 'critical').length} critical</span>
       </div>
     </div>
   );
